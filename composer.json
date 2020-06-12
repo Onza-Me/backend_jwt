@@ -1,0 +1,56 @@
+{
+    "name": "onza-me/backend_jwt",
+    "description": "Template of laravel package for DomDa project.",
+    "keywords": [
+        "onza-me",
+        "backend_jwt"
+    ],
+    "homepage": "https://github.com/onza-me/backend_jwt",
+    "license": "The Unlicense",
+    "type": "library",
+    "minimum-stability": "dev-master",
+    "authors": [
+        {
+            "name": "Yurij Karpov",
+            "email": "acrossoffwest@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "illuminate/support": "^6.0",
+        "phpseclib/phpseclib": "^2.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0",
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "OnzaMe\\JWT\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OnzaMe\\JWT\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "OnzaMe\\JWT\\JWTServiceProvider"
+            ],
+            "aliases": {
+                "JWT": "OnzaMe\\JWT\\JWTFacade"
+            }
+        }
+    }
+}
