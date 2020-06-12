@@ -4,6 +4,8 @@ namespace OnzaMe\JWT\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use OnzaMe\JWT\JWT;
+use OnzaMe\JWT\RSAKeys;
 use OnzaMe\JWT\Services\AccessTokenService;
 
 /**
@@ -27,16 +29,18 @@ class AccessToken extends Model
     ];
 
     protected array $payload = [];
+    protected array $payloadForRefresh = [];
     protected AccessTokenService $service;
 
     /**
      * AccessToken constructor.
      * @param array $payload
      */
-    public function __construct(array  $payload = [])
+    public function __construct(array  $payload = [], array $payloadForRefresh = [])
     {
         $this->payload = $payload;
-        $this->service = app(AccessTokenService::class);
+        $this->payloadForRefresh = $payloadForRefresh;
+        $this->service = new AccessTokenService(new JWT(), new RSAKeys());
         $this->generateTokens();
     }
 
@@ -47,7 +51,7 @@ class AccessToken extends Model
         $refreshExpiresAt = Carbon::now()->addSeconds(config('jwt.refresh_token_expires_in'));
 
         $this->expires_at = $expiresAt;
-        $this->token = $this->service->generateAccessToken($this->payload, $createdAt, $expiresAt);
-        $this->refresh_token = $this->service->generateAccessToken($this->payload, $createdAt, $refreshExpiresAt);
+        $this->token = $this->service->generate($this->payload, $createdAt, $expiresAt);
+        $this->refresh_token = $this->service->generate($this->payloadForRefresh, $createdAt, $refreshExpiresAt);
     }
 }

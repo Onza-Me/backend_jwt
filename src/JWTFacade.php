@@ -16,6 +16,6 @@ class JWTFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'domda_backend_laravel_package_template';
+        return 'jwt';
     }
 }

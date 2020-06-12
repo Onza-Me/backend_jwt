@@ -8,7 +8,7 @@
 
 namespace OnzaMe\JWT\Services;
 
-use OnzaMe\JWT\Contracts\JWTInterface;
+use OnzaMe\JWT\Contracts\JWTContract;
 use OnzaMe\JWT\RSAKeys;
 use Carbon\Carbon;
 
@@ -18,10 +18,10 @@ use Carbon\Carbon;
  */
 class AccessTokenService
 {
-    protected JWTInterface $jwt;
+    protected JWTContract $jwt;
     protected RSAKeys $rsaKeys;
 
-    public function __construct(JWTInterface $jwt, RSAKeys $rsaKeys)
+    public function __construct(JWTContract $jwt, RSAKeys $rsaKeys)
     {
         $this->jwt = $jwt;
         $this->rsaKeys = $rsaKeys;
@@ -31,8 +31,6 @@ class AccessTokenService
      * @param array $payload
      * @param Carbon $createdAt
      * @param Carbon $expiresAt
-     * @param string $apiType
-     * @param string $tokenType
      * @return mixed
      */
     public function generate(array $payload, Carbon $createdAt, Carbon $expiresAt)

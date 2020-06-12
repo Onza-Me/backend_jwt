@@ -11,7 +11,7 @@ class JwtRsaGenerateCommand extends Command
         parent::__construct();
     }
 
-    protected $signature = 'jwt:rsa:generate';
+    protected $signature = 'jwt:rsa:generate {--force}';
 
     /**
      * The console command description.
@@ -57,6 +57,9 @@ class JwtRsaGenerateCommand extends Command
 
     protected function safetySaveContent($filepath, $content)
     {
+        if (!$this->option('force') && file_exists($filepath)) {
+            return;
+        }
         $this->createBackupFile($filepath);
         $this->putToFile($filepath, $content);
     }

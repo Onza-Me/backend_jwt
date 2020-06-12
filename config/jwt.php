@@ -3,6 +3,7 @@
 return [
     'access_token_expires_in' => 1800,
     'refresh_token_expires_in' => 604800,
+    'secret' => env('JWT_SECRET', '{very secret key}'),
     'rsa' => [
         'algo' => 'RS256',
         'key_size' => 2048,

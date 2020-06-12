@@ -4,13 +4,13 @@ namespace OnzaMe\JWT;
 
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT as FirebaseJWT;
-use OnzaMe\JWT\Contracts\JWTInterface;
+use OnzaMe\JWT\Contracts\JWTContract;
 
 /**
  * Class JWT
  * @package OnzaMe\JWT
  */
-class JWT implements JWTInterface
+class JWT implements JWTContract
 {
     protected string $secret = '';
 
