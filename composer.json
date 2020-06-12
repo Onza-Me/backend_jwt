@@ -8,7 +8,6 @@
     "homepage": "https://github.com/onza-me/backend_jwt",
     "license": "The Unlicense",
     "type": "library",
-    "minimum-stability": "dev-master",
     "authors": [
         {
             "name": "Yurij Karpov",
@@ -18,11 +17,12 @@
     ],
     "require": {
         "php": "~7.4",
-        "illuminate/support": "^7.*",
+        "firebase/php-jwt": "^5.2",
+        "illuminate/support": "^7.0",
         "phpseclib/phpseclib": "^2.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^4.0",
+        "orchestra/testbench": "^5.0",
         "phpunit/phpunit": "^8.0"
     },
     "autoload": {
