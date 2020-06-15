@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'access_token_expires_in' => 1800,
-    'refresh_token_expires_in' => 604800,
+    'access_token_expires_in' => env('JWT_TOKEN_EXPIRES_IN', 1800),
+    'refresh_token_expires_in' => env('JWT_REFRESH_TOKEN_EXPIRES_IN', 604800),
     'secret' => env('JWT_SECRET', '{very secret key}'),
     'rsa' => [
         'algo' => 'RS256',
