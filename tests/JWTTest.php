@@ -2,6 +2,7 @@
 
 namespace OnzaMe\JWT\Tests;
 
+use Illuminate\Foundation\Auth\User;
 use OnzaMe\JWT\Models\AccessToken;
 use OnzaMe\JWT\Services\AccessTokenService;
 use OnzaMe\JWT\Services\AuthorizationHeaderService;
@@ -58,7 +59,15 @@ class JWTTest extends TestCase
 
     public function testValidatingMiddleware()
     {
-        $token = new AccessToken(['test']);
+        $payload = [
+            'user' => [
+                'id' => 'test',
+                'role' => 'test'
+            ]
+        ];
+
+        $token = new AccessToken($payload);
+
         $response = $this->get('/test/jwt/authorization', [
             'Authorization' => 'Bearer '.$token->token
         ]);
