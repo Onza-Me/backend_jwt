@@ -2,15 +2,11 @@
 
 namespace OnzaMe\JWT\Tests;
 
-use OnzaMe\JWT\Http\Middleware\JWTAuth;
-use OnzaMe\JWT\JWT;
 use OnzaMe\JWT\Models\AccessToken;
-use OnzaMe\JWT\RSAKeys;
 use OnzaMe\JWT\Services\AccessTokenService;
 use OnzaMe\JWT\Services\AuthorizationHeaderService;
 use Orchestra\Testbench\TestCase;
 use OnzaMe\JWT\JWTServiceProvider;
-use phpseclib\Crypt\RSA;
 
 class JWTTest extends TestCase
 {
