@@ -2,16 +2,18 @@
 
 namespace OnzaMe\JWT\Tests;
 
+use OnzaMe\JWT\Http\Middleware\JWTAuth;
 use OnzaMe\JWT\JWT;
 use OnzaMe\JWT\Models\AccessToken;
 use OnzaMe\JWT\RSAKeys;
 use OnzaMe\JWT\Services\AccessTokenService;
+use OnzaMe\JWT\Services\AuthorizationHeaderService;
 use Orchestra\Testbench\TestCase;
 use OnzaMe\JWT\JWTServiceProvider;
+use phpseclib\Crypt\RSA;
 
-class JwtTest extends TestCase
+class JWTTest extends TestCase
 {
-
     protected function getPackageProviders($app)
     {
         return [JWTServiceProvider::class];
@@ -39,10 +41,41 @@ class JwtTest extends TestCase
      */
     public function testDecodingAccessToken(AccessToken $accessToken)
     {
-        $service = new AccessTokenService(new JWT(), new RSAKeys());
+        $service = app(AccessTokenService::class);
         $this->assertContains('super secret data', $service->decode($accessToken->token));
         $this->assertNotContains('test', $service->decode($accessToken->token));
         $this->assertContains('test', $service->decode($accessToken->refresh_token));
         $this->assertNotContains('super secret data', $service->decode($accessToken->refresh_token));
+    }
+
+    public function testFacadeOfAccessToken()
+    {
+        $accessTokenService = app(AccessTokenService::class);
+        $this->assertTrue(is_a($accessTokenService, AccessTokenService::class));
+    }
+
+    public function testAuthorizationHeaderService()
+    {
+        $authHeaderService = app(AuthorizationHeaderService::class);
+        $this->assertFalse($authHeaderService->isValid());
+    }
+
+    public function testValidatingMiddleware()
+    {
+        $token = new AccessToken(['test']);
+        $response = $this->get('/test/jwt/authorization', [
+            'Authorization' => 'Bearer '.$token->token
+        ]);
+        $response->assertOk();
+        $response->assertSeeText('Ok');
+    }
+
+    public function testValidatingMiddlewareWithError()
+    {
+        $response = $this->get('/test/jwt/authorization', [
+            'Authorization' => 'Bearer test'
+        ]);
+
+        $response->assertUnauthorized();
     }
 }

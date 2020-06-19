@@ -15,53 +15,40 @@ class JWT implements JWTContract
     protected string $secret = '';
 
     /**
-     * JWT constructor.
-     */
-    public function __construct()
-    {
-        $this->getSecret();
-    }
-
-    /**
+     * @param string|null $key
      * @return string
      */
-    private function getSecret(): string
+    private function getSecret(string $key = null): string
     {
+        if (!is_null($key)) {
+            return $key;
+        }
         if (!empty($this->secret)) {
             return $this->secret;
         }
         return $this->secret = config('jwt.secret');
     }
 
-    public function encode($token = [], string $key = null, $alg = 'HS256')
+    public function encode(array $token = [], string $key = null, $alg = 'HS256'): string
     {
-        $key = $key ?? $this->getSecret();
-
-        return FirebaseJWT::encode($token, $key, $alg);
+        return FirebaseJWT::encode($token, $this->getSecret($key), $alg);
     }
 
-    public function decode($jwt, string $key = null, array $algs = ['HS256'])
+    /**
+     * @param string $jwt
+     * @param string|null $key
+     * @param array|string[] $algs
+     * @return array|null
+     */
+    public function decode(string $jwt, string $key = null, array $algs = ['HS256']): array
     {
-        $key = $key ?? $this->getSecret();
-        $tokenArray = null;
-
-        try {
-            $tokenArray = (array) FirebaseJWT::decode($jwt, $key, $algs);
-        } catch (ExpiredException $ex) {
-            throw $ex;
-        } catch (\Exception $ex) {
-            if ($ex->getMessage() != 'Algorithm not allowed') {
-                logs()->error($ex->getMessage());
-            }
-        }
-
-        return $tokenArray;
+        return (array) FirebaseJWT::decode($jwt, $this->getSecret($key), $algs);
     }
 
-    public function isValid(string $token, $key = null, $algs = ['HS256']): bool
+    public function isValid(string $jwt, string $key = null, array $algs = ['HS256']): bool
     {
         try {
-            $this->decode($token, $key, $algs);
+            $this->decode($jwt, $key, $algs);
         } catch (\Exception $ex) {
             return false;
         }

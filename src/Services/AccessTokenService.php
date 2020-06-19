@@ -64,4 +64,13 @@ class AccessTokenService
     {
         return $this->jwt->decode($accessToken, $this->getPublicKey(), [$this->getAlgo()]);
     }
+
+    /**
+     * @param string $accessToken
+     * @return mixed
+     */
+    public function isValid(string $accessToken)
+    {
+        return $this->jwt->isValid($accessToken, $this->getPublicKey(), [$this->getAlgo()]);
+    }
 }

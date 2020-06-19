@@ -4,6 +4,8 @@ namespace OnzaMe\JWT;
 
 use Illuminate\Support\ServiceProvider;
 use OnzaMe\JWT\Console\PackageCommandsHandler;
+use OnzaMe\JWT\Contracts\JWTContract;
+use OnzaMe\JWT\Services\AccessTokenService;
 
 class JWTServiceProvider extends ServiceProvider
 {
@@ -24,7 +26,9 @@ class JWTServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../config/jwt.php' => config_path('jwt.php'),
             ], 'config');
-
+            if (config('app.env') === 'testing') {
+                $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+            }
             // Publishing the views.
             /*$this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/domda_backend_laravel_package_template'),
@@ -54,8 +58,7 @@ class JWTServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/jwt.php', 'jwt');
 
         // Register the main class to use with the facade
-        $this->app->singleton('domda_backend_laravel_package_template', function () {
-            return new JWT;
-        });
+        $this->app->bind('jwt', JWT::class);
+        $this->app->bind(JWTContract::class, 'jwt');
     }
 }

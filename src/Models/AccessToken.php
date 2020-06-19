@@ -35,6 +35,7 @@ class AccessToken extends Model
     /**
      * AccessToken constructor.
      * @param array $payload
+     * @param array $payloadForRefresh
      */
     public function __construct(array  $payload = [], array $payloadForRefresh = [])
     {
