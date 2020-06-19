@@ -38,3 +38,5 @@ Decode data
 `JWT_TOKEN_EXPIRES_IN` - JWToken life in seconds, Default: `1800`
 
 `JWT_REFRESH_TOKEN_EXPIRES_IN` - JWToken for refresh life time in seconds, Default: `604800`
+
+`JWT_USER_CLASS` - Please set your User class if you wanna use JWTAuth middleware
