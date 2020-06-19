@@ -42,7 +42,8 @@ class JWT implements JWTContract
      */
     public function decode(string $jwt, string $key = null, array $algs = ['HS256']): array
     {
-        return (array) FirebaseJWT::decode($jwt, $this->getSecret($key), $algs);
+        $data = FirebaseJWT::decode($jwt, $this->getSecret($key), $algs);
+        return (array) json_decode(json_encode($data), true);
     }
 
     public function isValid(string $jwt, string $key = null, array $algs = ['HS256']): bool

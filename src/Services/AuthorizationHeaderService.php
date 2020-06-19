@@ -59,8 +59,8 @@ class AuthorizationHeaderService
         $userClass = config('jwt.user_class');
         $user = new $userClass();
 
-        $user->id = $decodedToken['user']->id;
-        $user->role = $decodedToken['user']->role;
+        $user->id = $decodedToken['user']['id'];
+        $user->role = $decodedToken['user']['role'];
         $user->exists = true;
 
         return $user;
