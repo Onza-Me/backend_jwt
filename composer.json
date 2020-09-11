@@ -6,7 +6,7 @@
         "backend_jwt"
     ],
     "homepage": "https://github.com/onza-me/backend_jwt",
-    "license": "The Unlicense",
+    "license": "proprietary",
     "type": "library",
     "authors": [
         {
