@@ -12,6 +12,7 @@ use OnzaMe\JWT\Services\AccessTokenService;
  * Class Member
  * @package App\Models
  *
+ * @property string  $role
  * @property string  $token
  * @property string  $expires_at
  * @property string  $refresh_token
@@ -19,6 +20,7 @@ use OnzaMe\JWT\Services\AccessTokenService;
 class AccessToken extends Model
 {
     protected $appends = [
+        'role',
         'token',
         'expires_at',
         'refresh_token'
@@ -40,6 +42,7 @@ class AccessToken extends Model
     public function __construct(array  $payload = [], array $payloadForRefresh = [])
     {
         $this->payload = $payload;
+        $this->role = !empty($payload['user']) && !empty($payload['user']['role']) ? $payload['user']['role'] : null;
         $this->payloadForRefresh = $payloadForRefresh;
         $this->service = new AccessTokenService(new JWT(), new RSAKeys());
         $this->generateTokens();
