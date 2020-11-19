@@ -2,12 +2,12 @@
 
 namespace OnzaMe\JWT\Tests;
 
-use Illuminate\Foundation\Auth\User;
-use OnzaMe\JWT\Models\AccessToken;
-use OnzaMe\JWT\Services\AccessTokenService;
-use OnzaMe\JWT\Services\AuthorizationHeaderService;
 use Orchestra\Testbench\TestCase;
 use OnzaMe\JWT\JWTServiceProvider;
+use OnzaMe\JWT\Models\AccessToken;
+use Illuminate\Foundation\Auth\User;
+use OnzaMe\JWT\Services\AccessTokenService;
+use OnzaMe\JWT\Services\AuthorizationHeaderService;
 
 class JWTTest extends TestCase
 {

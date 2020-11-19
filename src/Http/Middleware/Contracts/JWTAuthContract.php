@@ -1,7 +1,7 @@
 <?php
 
 
-namespace OnzaMe\JWT\Http\MIddleware\Contracts;
+namespace OnzaMe\JWT\Http\Middleware\Contracts;
 
 
 interface JWTAuthContract
