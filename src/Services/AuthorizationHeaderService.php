@@ -4,13 +4,13 @@
 namespace OnzaMe\JWT\Services;
 
 
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\User;
 use OnzaMe\JWT\Exceptions\AuthTokenInvalidException;
-use OnzaMe\JWT\Exceptions\BackendAuthModelsNoInstalledException;
 use OnzaMe\JWT\Exceptions\InvalidDataInTokenException;
+use OnzaMe\JWT\Services\Contracts\AuthorizationHeaderContract;
 
-class AuthorizationHeaderService
+class AuthorizationHeaderService implements AuthorizationHeaderContract
 {
     protected Request $request;
     protected string $authorizationToken = '';
@@ -26,7 +26,7 @@ class AuthorizationHeaderService
         $this->accessTokenService = $accessTokenService;
     }
 
-    public function getAccessToken()
+    public function getAccessToken(): string
     {
         if (!empty($this->authorizationToken)) {
             return $this->authorizationToken;
@@ -82,7 +82,7 @@ class AuthorizationHeaderService
      * @return bool
      * @throws InvalidDataInTokenException
      */
-    public function isValid()
+    public function isValid(): bool
     {
         if (!empty($this->isTokenValid)) {
             return $this->isTokenValid === 'valid';
@@ -102,5 +102,17 @@ class AuthorizationHeaderService
         }
 
         return true;
+    }
+
+    public function isPhoneVerified(): bool
+    {
+        $decodedToken = $this->getDecodedToken();
+        return isset($decodedToken['user']['phone_verified']) && $decodedToken['user']['phone_verified'] === true;
+    }
+
+    public function isEmailVerified(): bool
+    {
+        $decodedToken = $this->getDecodedToken();
+        return isset($decodedToken['user']['email_verified']) && $decodedToken['user']['email_verified'] === true;
     }
 }
