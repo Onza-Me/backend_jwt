@@ -2,10 +2,16 @@
 
 namespace OnzaMe\JWT\Http\Middleware;
 
+use Carbon\Carbon;
 use Closure;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
+use OnzaMe\JWT\Exceptions\UserWereBlockException;
+use OnzaMe\JWT\Models\BlockedTokensUserId;
 use OnzaMe\JWT\Services\AuthorizationHeaderService;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 abstract class AbstractJWTAuth
@@ -24,7 +30,11 @@ abstract class AbstractJWTAuth
         if (!$this->isValid()) {
             throw new UnauthorizedHttpException('Basic', 'Unauthorized');
         }
-        $this->setUser($request, $this->service->getUser());
+
+        $user = $this->service->getUser();
+        $this->notBlockedUser($user);
+        $this->setUser($request, $user);
+
         return $next($request);
     }
 
@@ -34,5 +44,21 @@ abstract class AbstractJWTAuth
     {
         $request->setUserResolver(fn () => $user);
         auth()->setUser($user);
+    }
+
+    private function notBlockedUser(Authenticatable $user)
+    {
+        try {
+            if (!config('jwt.check_blocked_users')) {
+                return;
+            }
+            if (BlockedTokensUserId::query()->where('user_id', $user->id)->exists()) {
+                throw new UserWereBlockException();
+            }
+        } catch (UserWereBlockException $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
+            report($exception);
+        }
     }
 }

@@ -16,7 +16,8 @@ class AuthorizationHeaderService implements AuthorizationHeaderContract
     protected string $authorizationToken = '';
     protected string $authorizationHeaderFieldname = 'Authorization';
     protected string $authorizationHeaderValuePrefix = 'Bearer ';
-    protected string $isTokenValid = '';
+    protected bool $decodeTried = false;
+    protected bool $isTokenValid = false;
     protected AccessTokenService $accessTokenService;
     protected array $decodedToken = [];
 
@@ -84,24 +85,24 @@ class AuthorizationHeaderService implements AuthorizationHeaderContract
      */
     public function isValid(): bool
     {
-        if (!empty($this->isTokenValid)) {
-            return $this->isTokenValid === 'valid';
+        if ($this->decodeTried) {
+            return $this->isTokenValid;
         }
 
+        $this->decodeTried = true;
         try {
             $this->decodedToken = $this->accessTokenService->decode($this->getAccessToken());
 
             if (empty($this->decodedToken['user'])) {
                 throw new InvalidDataInTokenException();
             }
-            $this->isTokenValid = 'valid';
         } catch (InvalidDataInTokenException $e) {
             throw $e;
         } catch (\Exception $e) {
-            return false;
+            return $this->isTokenValid;
         }
 
-        return true;
+        return $this->isTokenValid = true;
     }
 
     public function isPhoneVerified(): bool

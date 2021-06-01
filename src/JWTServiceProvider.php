@@ -19,7 +19,7 @@ class JWTServiceProvider extends ServiceProvider
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'domda_backend_laravel_package_template');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'domda_backend_laravel_package_template');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
