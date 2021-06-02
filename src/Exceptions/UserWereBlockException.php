@@ -16,14 +16,17 @@ class UserWereBlockException extends HttpException
      * @param \Throwable|null $previous The previous exception
      * @param int             $code     The internal exception code
      */
-    public function __construct(?string $message = 'You were block.', \Throwable $previous = null, int $code = 0, array $headers = [])
+    public function __construct(?string $message = '', \Throwable $previous = null, int $code = 0, array $headers = [])
     {
+        if (empty($message)) {
+            $message = __('auth.blocked_account');
+        }
         if (null === $message) {
             trigger_deprecation('symfony/http-kernel', '5.3', 'Passing null as $message to "%s()" is deprecated, pass an empty string instead.', __METHOD__);
 
             $message = '';
         }
 
-        parent::__construct(419, $message, $previous, $headers, $code);
+        parent::__construct(401, $message, $previous, $headers, $code);
     }
 }
