@@ -11,8 +11,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BlockedTokensUserId extends Model
 {
+    protected $primaryKey = 'user_id';
+    public $timestamps = false;
     protected $fillable = [
-        'id',
+        'user_id',
         'expire_at'
     ];
 
