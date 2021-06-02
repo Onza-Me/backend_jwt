@@ -2,16 +2,13 @@
 
 namespace OnzaMe\JWT\Http\Middleware;
 
-use Carbon\Carbon;
 use Closure;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use OnzaMe\JWT\Exceptions\UserWereBlockException;
 use OnzaMe\JWT\Models\BlockedTokensUserId;
+use OnzaMe\JWT\Services\AccessTokenService;
 use OnzaMe\JWT\Services\AuthorizationHeaderService;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 abstract class AbstractJWTAuth
@@ -26,7 +23,7 @@ abstract class AbstractJWTAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        $this->service = app(AuthorizationHeaderService::class);
+        $this->service = new AuthorizationHeaderService($request, app(AccessTokenService::class));
         if (!$this->isValid()) {
             throw new UnauthorizedHttpException('Basic', 'Unauthorized');
         }
