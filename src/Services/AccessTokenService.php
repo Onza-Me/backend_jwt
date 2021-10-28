@@ -8,15 +8,16 @@
 
 namespace OnzaMe\JWT\Services;
 
-use OnzaMe\JWT\Contracts\JWTContract;
-use OnzaMe\JWT\RSAKeys;
 use Carbon\Carbon;
+use OnzaMe\JWT\Contracts\RSAKeys;
+use OnzaMe\JWT\Contracts\JWT as JWTContract;
+use OnzaMe\JWT\Services\Contracts\AccessTokenService as AccessTokenServiceContract;
 
 /**
  * Class AccessTokenService
  * @package OnzaMe\JWT\Services
  */
-class AccessTokenService
+class AccessTokenService implements AccessTokenServiceContract
 {
     protected JWTContract $jwt;
     protected RSAKeys $rsaKeys;

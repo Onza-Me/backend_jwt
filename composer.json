@@ -17,13 +17,15 @@
     ],
     "require": {
         "php": "~7.4|^8.0",
+        "ext-json": "*",
+        "ext-mbstring": "*",
         "firebase/php-jwt": "^5.2",
         "illuminate/support": "^7.0|^8.0",
         "phpseclib/phpseclib": "^2.0"
     },
     "require-dev": {
         "orchestra/testbench": "^5.0",
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-4": {

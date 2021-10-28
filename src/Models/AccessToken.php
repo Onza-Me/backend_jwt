@@ -4,9 +4,7 @@ namespace OnzaMe\JWT\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use OnzaMe\JWT\JWT;
-use OnzaMe\JWT\RSAKeys;
-use OnzaMe\JWT\Services\AccessTokenService;
+use OnzaMe\JWT\Services\Contracts\AccessTokenService;
 
 /**
  * Class Member
@@ -44,7 +42,7 @@ class AccessToken extends Model
         $this->payload = $payload;
         $this->role = !empty($payload['user']) && !empty($payload['user']['role']) ? $payload['user']['role'] : null;
         $this->payloadForRefresh = $payloadForRefresh;
-        $this->service = new AccessTokenService(new JWT(), new RSAKeys());
+        $this->service = app(AccessTokenService::class);
         $this->generateTokens();
     }
 

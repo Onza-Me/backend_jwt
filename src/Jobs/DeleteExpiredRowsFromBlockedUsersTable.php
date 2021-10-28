@@ -2,14 +2,12 @@
 
 namespace OnzaMe\JWT\Jobs;
 
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use OnzaMe\JWT\Models\BlockedTokensUserId;
-use OnzaMe\JWT\Services\BlockedTokensTokensUserIdsIdsService;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use OnzaMe\JWT\Services\Contracts\BlockedTokensUserIdsServiceContract;
 
 class DeleteExpiredRowsFromBlockedUsersTable implements ShouldQueue
 {
@@ -31,6 +29,6 @@ class DeleteExpiredRowsFromBlockedUsersTable implements ShouldQueue
      */
     public function handle()
     {
-        app(BlockedTokensTokensUserIdsIdsService::class)->deleteExpiredIds();
+        app(BlockedTokensUserIdsServiceContract::class)->deleteExpiredIds();
     }
 }

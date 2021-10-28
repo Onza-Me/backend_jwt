@@ -4,8 +4,8 @@
 namespace OnzaMe\JWT\Services\Contracts;
 
 
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\User;
 use OnzaMe\JWT\Services\AccessTokenService;
 
 interface AuthorizationHeaderContract

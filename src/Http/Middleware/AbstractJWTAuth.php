@@ -4,9 +4,9 @@ namespace OnzaMe\JWT\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use OnzaMe\JWT\Exceptions\UserWereBlockException;
 use OnzaMe\JWT\Models\BlockedTokensUserId;
 use OnzaMe\JWT\Services\AccessTokenService;
+use OnzaMe\JWT\Exceptions\UserWereBlockException;
 use OnzaMe\JWT\Services\AuthorizationHeaderService;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;

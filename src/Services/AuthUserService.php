@@ -5,16 +5,22 @@ namespace OnzaMe\JWT\Services;
 
 
 use Illuminate\Http\Request;
+use OnzaMe\JWT\Services\Contracts\AuthUserService as AuthUserServiceContract;
 
-class AuthUserService
+class AuthUserService implements AuthUserServiceContract
 {
+    protected Request $request;
+    protected AccessTokenService $accessTokenService;
+    protected string $authorizationHeaderValuePrefix = 'Bearer ';
+    protected string $authorizationHeaderFieldname = 'Authorization';
+
     public function __construct(Request $request, AccessTokenService $accessTokenService)
     {
         $this->request = $request;
         $this->accessTokenService = $accessTokenService;
     }
 
-    public function getAuthorizationToken()
+    public function getAuthorizationToken(): string
     {
         if (!empty($this->authorizationToken)) {
             return $this->authorizationToken;
@@ -31,7 +37,7 @@ class AuthUserService
         );
     }
 
-    public function isValid()
+    public function isValid(): bool
     {
         if (!empty($this->isTokenValid)) {
             return $this->isTokenValid === 'valid';

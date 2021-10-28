@@ -4,8 +4,21 @@ namespace OnzaMe\JWT;
 
 use Illuminate\Support\ServiceProvider;
 use OnzaMe\JWT\Console\PackageCommandsHandler;
-use OnzaMe\JWT\Contracts\JWTContract;
+use OnzaMe\JWT\Contracts\JWT as JWTContract;
+use OnzaMe\JWT\Contracts\RSAKeys as RSAKeysContract;
 use OnzaMe\JWT\Services\AccessTokenService;
+use OnzaMe\JWT\Services\AuthorizationHeaderService;
+use OnzaMe\JWT\Services\AuthUserService;
+use OnzaMe\JWT\Services\BlockedTokensTokensUserIdsIdsService;
+use OnzaMe\JWT\Services\BlockedTokensUserIdsIdsService;
+use OnzaMe\JWT\Services\Contracts\AccessTokenService as AccessTokenServiceContract;
+use OnzaMe\JWT\Services\Contracts\AuthorizationHeaderContract;
+use OnzaMe\JWT\Services\Contracts\AuthUserService as AuthUserServiceContract;
+use OnzaMe\JWT\Services\Contracts\BlockedTokensUserIdsServiceContract;
+use OnzaMe\JWT\Services\Contracts\FileSaver;
+use OnzaMe\JWT\Services\Contracts\JwtRsaGenerator;
+use OnzaMe\JWT\Services\FileSaverService;
+use OnzaMe\JWT\Services\JwtRsaFileGenerateService;
 
 class JWTServiceProvider extends ServiceProvider
 {
@@ -14,13 +27,7 @@ class JWTServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /*
-         * Optional methods to load your package assets
-         */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'domda_backend_laravel_package_template');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'domda_backend_laravel_package_template');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -29,20 +36,6 @@ class JWTServiceProvider extends ServiceProvider
             if (config('app.env') === 'testing') {
                 $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
             }
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/domda_backend_laravel_package_template'),
-            ], 'views');*/
-
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/domda_backend_laravel_package_template'),
-            ], 'assets');*/
-
-            // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/domda_backend_laravel_package_template'),
-            ], 'lang');*/
 
             // Registering package commands.
             $this->commands((new PackageCommandsHandler())->getCommands());
@@ -59,6 +52,14 @@ class JWTServiceProvider extends ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->bind('jwt', JWT::class);
+
         $this->app->bind(JWTContract::class, 'jwt');
+        $this->app->bind(RSAKeysContract::class, RSAKeys::class);
+        $this->app->bind(AccessTokenServiceContract::class, AccessTokenService::class);
+        $this->app->bind(AuthorizationHeaderContract::class, AuthorizationHeaderService::class);
+        $this->app->bind(AuthUserServiceContract::class, AuthUserService::class);
+        $this->app->bind(BlockedTokensUserIdsServiceContract::class, BlockedTokensUserIdsIdsService::class);
+        $this->app->bind(JwtRsaGenerator::class, JwtRsaFileGenerateService::class);
+        $this->app->bind(FileSaver::class, FileSaverService::class);
     }
 }

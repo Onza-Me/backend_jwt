@@ -2,11 +2,13 @@
 
 namespace OnzaMe\JWT;
 
+use OnzaMe\JWT\Contracts\RSAKeys as RSAKeysContract;
+
 /**
  * Class RSAKeys
  * @package namespace OnzaMe\JWT;
  */
-class RSAKeys
+class RSAKeys implements RSAKeysContract
 {
     protected string $path = '';
     protected string $privateKeyFilename = '';

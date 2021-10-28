@@ -4,9 +4,6 @@ namespace OnzaMe\JWT;
 
 use Illuminate\Support\Facades\Facade;
 
-/**
- * @see \OnzaMe\JWT\Skeleton\SkeletonClass
- */
 class JWTFacade extends Facade
 {
     /**
